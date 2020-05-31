@@ -1,0 +1,13 @@
+---
+bootstrap_user: root
+ntpserver: at.pool.ntp.org
+download_dir: /tmp/downloads
+add_user: ["ozzy"]
+
+# Base install control 
+base_docker_install: yes 
+
+base_java_install: yes
+base_java_vendor: openjdk
+base_java_type: jre
+base_java_version: 11

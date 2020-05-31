@@ -1,0 +1,112 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+
+# Base tools and packages
+  - name: base packages
+    apt:
+      pkg: [curl, wget, ubuntu-restricted-extras, tmux, htop, gdebi-core ]
+      update_cache: yes
+      cache_valid_time: 3600
+    become: True
+
+  - name: base packer
+    apt:
+      pkg: [rar, unrar, p7zip-full, p7zip-rar]
+      update_cache: yes
+      cache_valid_time: 3600
+    become: True
+
+# Base runtimes (java, docker, ... nodejs?)
+  - name: Install AdoptOpenJdk
+    include_role:
+      name: adoptopenjdk_role
+    vars:
+      adoptopenjdk_package: adoptopenjdk-11-openj9
+
+  - name: Install Docker
+    include_role:
+      name: geerlingguy.docker
+    vars:
+      docker_users: "{{ add_user }}"
+      docker_edition: 'ce'
+      docker_package_state: present
+      docker_install_compose: true
+
+  # for user: ozzy
+  # - name: Install NVM and NodeJS
+  #   include_role:
+  #     name: stephdewit.nvm
+
+# developer packages
+  - name: Buildtools
+    include_role:
+      name: robertdebock.buildtools
+
+  - name: base developer packages
+    apt:
+      pkg: [build-essential, python3-pip, python3-venv, git, golang-1.14]
+      update_cache: yes
+      cache_valid_time: 3600
+    become: True
+
+  # for user: ozzy
+  # - name: install pipx and virtualenv
+  #   pip:
+  #     name:
+  #       - pipx
+  #       - virtualenv
+
+# code editors
+  - name: Install atom editor
+    apt:
+      deb: https://github.com/atom/atom/releases/download/v1.47.0/atom-amd64.deb
+
+  - name: Add vscodium Apt signing key
+    apt_key:
+      url: https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg
+      state: present
+
+  - name: Add vscodium apt repo
+    apt_repository:
+      repo: deb https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/repos/debs/ vscodium main
+      state: present
+      filename: vscodium
+
+  - name: Install vscodium
+    apt:
+      name: codium
+      update_cache: yes
+
+  - name: Install pycharm
+    include_role:
+      name: oefenweb.pycharm
+
+# browser
+  - name: Install google-chrome
+    apt:
+      deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+# markdown
+  - name: Add typora repo key
+    apt_key:
+      url: https://typora.io/linux/public-key.asc
+      state: present
+  - name: Add typora apt repo
+    apt_repository:
+      repo: deb https://typora.io/linux ./
+      state: present
+      filename: typora
+  - name: Install typora
+    apt:
+      name: typora
+      update_cache: yes
+
+# remote tools
+  - name: Install remote access tools
+    apt:
+      pkg: [remmina,remmina-plugin-rdp, filezilla ]
+      update_cache: yes
+      cache_valid_time: 3600
+    become: True

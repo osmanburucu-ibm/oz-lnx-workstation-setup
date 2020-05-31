@@ -1,0 +1,17 @@
+---
+- name: bootstrap all hosts
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - role: robertdebock.bootstrap
+      bootstrap_user: root
+
+- name: update all hosts
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - robertdebock.update

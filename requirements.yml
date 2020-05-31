@@ -1,0 +1,11 @@
+---
+- src: robertdebock.bootstrap
+- src: robertdebock.environment
+- src: robertdebock.buildtools
+- src: robertdebock.java
+- src: geerlingguy.docker
+- src: sfuhrm.adoptopenjdk_role
+  version: master
+  name: adoptopenjdk_role
+- src: stephdewit.nvm
+- src: oefenweb.pycharm
