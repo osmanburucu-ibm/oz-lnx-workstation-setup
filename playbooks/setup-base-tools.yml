@@ -6,7 +6,7 @@
 # Base tools and packages
   - name: base packages
     apt:
-      pkg: [curl, wget, ubuntu-restricted-extras, tmux, htop, gdebi-core ]
+      pkg: [curl, wget, ubuntu-restricted-extras, ubuntu-restricted-addons,tmux, htop, gdebi-core ]
       update_cache: yes
       cache_valid_time: 3600
     become: True
@@ -107,6 +107,14 @@
   - name: Install remote access tools
     apt:
       pkg: [remmina,remmina-plugin-rdp, filezilla ]
+      update_cache: yes
+      cache_valid_time: 3600
+    become: True
+
+# desktop addons 
+  - name: Install desktop related addons
+    apt:
+      pkg: [gnome-sushi]
       update_cache: yes
       cache_valid_time: 3600
     become: True
