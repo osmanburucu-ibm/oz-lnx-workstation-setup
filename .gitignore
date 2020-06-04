@@ -1,1 +1,20 @@
 roles
+
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
+
+# vs-code files
+*.code-workspace
+
+# Ansible files
+*.retry
+
+# Vagrant
+.vagrant
